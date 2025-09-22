@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FonoActivity Generator - IA Real</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md py-4">
+        <div class="container mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-brain text-indigo-600 text-3xl"></i>
+                <h1 class="text-2xl font-bold text-gray-800">FonoActivity Generator</h1>
+                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">IA Real</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-600 hover:text-indigo-600">
+                    <i class="fas fa-history text-xl"></i>
+                </button>
+                <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+                    <i class="fas fa-user mr-2"></i>Mi Perfil
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Panel Izquierdo: Formulario -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-clipboard-list text-indigo-600 mr-2"></i>
+                    Crear Nueva Actividad
+                </h2>
+
+                <!-- Formulario -->
+                <form id="activityForm" class="space-y-6">
+                    <!-- Diagnóstico Fonoaudiológico -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-stethoscope mr-1"></i>Diagnóstico Fonoaudiológico
+                        </label>
+                        <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" rows="2" placeholder="Ej: Dislalia funcional, trastorno articulatorio..."></textarea>
+                    </div>
+
+                    <!-- Características del Paciente -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-user-injured mr-1"></i>Características del Paciente
+                        </label>
+                        <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" rows="3" placeholder="Ej: Niño de 7 años con TEA, lenguaje expresivo limitado..."></textarea>
+                    </div>
+
+                    <!-- Necesidades Específicas -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-bullseye mr-1"></i>Necesidades Específicas
+                        </label>
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Ej: Mejorar producción de fonemas /s/ y /z/">
+                    </div>
+
+                    <!-- Área Terapéutica -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-stethoscope mr-1"></i>Área Terapéutica
+                        </label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" id="therapeuticArea">
+                            <option value="lenguaje-adulto">Lenguaje Adulto</option>
+                            <option value="lenguaje-infantil">Lenguaje Infantil</option>
+                            <option value="habla-adulto">Habla Adulto</option>
+                            <option value="habla-infantil">Habla Infantil</option>
+                            <option value="deglucion-adulto">Deglución Adulto</option>
+                            <option value="deglucion-infantil">Deglución Infantil</option>
+                            <option value="motricidad-orofacial">Motricidad Orofacial</option>
+                            <option value="voz">Voz</option>
+                            <option value="fonoaudiologia-estetica">Fonoaudiología Estética</option>
+                            <option value="cognicion">Cognición</option>
+                            <option value="audiologia">Audiología</option>
+                        </select>
+                    </div>
+
+                    <!-- Duración -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-clock mr-1"></i>Duración (minutos)
+                        </label>
+                        <input type="range" min="5" max="60" value="15" class="w-full" id="durationSlider">
+                        <div class="flex justify-between text-sm text-gray-500 mt-1">
+                            <span>5 min</span>
+                            <span id="durationValue" class="font-medium text-indigo-600">15 min</span>
+                            <span>60 min</span>
+                        </div>
+                    </div>
+
+                    <!-- Creatividad -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-lightbulb mr-1"></i>Nivel de Creatividad
+                        </label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" class="creativity-btn p-2 border border-gray-300 rounded-lg text-center hover:bg-indigo-50" data-level="basico">Básico</button>
+                            <button type="button" class="creativity-btn p-2 border border-gray-300 rounded-lg text-center hover:bg-indigo-50 bg-indigo-100 border-indigo-300" data-level="intermedio">Intermedio</button>
+                            <button type="button" class="creativity-btn p-2 border border-gray-300 rounded-lg text-center hover:bg-indigo-50" data-level="avanzado">Avanzado</button>
+                        </div>
+                    </div>
+
+                    <!-- Estrategias de Apoyo -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-hands-helping mr-1"></i>Estrategias de Apoyo
+                        </label>
+                        <div class="grid grid-cols-2 gap-2 mb-3">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="rounded text-indigo-600" value="Refuerzo visual">
+                                <span class="text-sm">Refuerzo visual</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="rounded text-indigo-600" value="Modelado">
+                                <span class="text-sm">Modelado</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="rounded text-indigo-600" value="Tecnología">
+                                <span class="text-sm">Tecnología</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="rounded text-indigo-600" value="Juego simbólico">
+                                <span class="text-sm">Juego simbólico</span>
+                            </label>
+                        </div>
+                        <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" rows="2" placeholder="Escribe otras estrategias personalizadas..."></textarea>
+                    </div>
+
+                    <!-- Carga de PDFs -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-file-pdf mr-1"></i>Documentos de Referencia (PDF)
+                        </label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-indigo-400 transition cursor-pointer" id="pdfDropArea">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-600">Arrastra PDFs aquí o haz clic para seleccionar</p>
+                            <p class="text-xs text-gray-500 mt-1">Máximo 3 archivos</p>
+                        </div>
+                        <div id="pdfList" class="mt-2 space-y-1"></div>
+                    </div>
+
+                    <!-- Contexto Adicional -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-info-circle mr-1"></i>Contexto Adicional
+                        </label>
+                        <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" rows="2" placeholder="Ej: Sesión en clínica, con tablet disponible..."></textarea>
+                    </div>
+
+                    <!-- Botón Generar -->
+                    <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 transition flex items-center justify-center">
+                        <i class="fas fa-magic mr-2"></i>Generar Actividad con IA
+                    </button>
+                </form>
+            </div>
+
+            <!-- Panel Derecho: Resultado -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>
+                    Actividad Generada por IA
+                </h2>
+
+                <!-- Actividad Generada -->
+                <div id="generatedActivity" class="space-y-6">
+                    <div class="text-center py-12 text-gray-500">
+                        <i class="fas fa-robot text-4xl mb-4"></i>
+                        <p>Completa el formulario y haz clic en "Generar Actividad con IA"</p>
+                        <p class="text-sm mt-2">La IA analizará tus documentos y creará una actividad personalizada</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let selectedCreativity = 'intermedio';
+        let pdfFiles = [];
+        
+        // Actualizar duración
+        document.getElementById('durationSlider').addEventListener('input', function() {
+            document.getElementById('durationValue').textContent = this.value + ' min';
+        });
+
+        // Selección de creatividad
+        document.querySelectorAll('.creativity-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.creativity-btn').forEach(b => {
+                    b.classList.remove('bg-indigo-100', 'border-indigo-300');
+                });
+                this.classList.add('bg-indigo-100', 'border-indigo-300');
+                selectedCreativity = this.dataset.level;
+            });
+        });
+
+        // Simulación de carga de PDFs
+        document.getElementById('pdfDropArea').addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.pdf';
+            input.multiple = true;
+            input.onchange = function(e) {
+                const files = e.target.files;
+                const pdfList = document.getElementById('pdfList');
+                
+                for (let i = 0; i < Math.min(files.length, 3 - pdfFiles.length); i++) {
+                    const file = files[i];
+                    pdfFiles.push(file);
+                    
+                    const pdfItem = document.createElement('div');
+                    pdfItem.className = 'flex items-center justify-between bg-gray-50 p-2 rounded';
+                    pdfItem.innerHTML = `
+                        <div class="flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            <span class="text-sm">${file.name}</span>
+                        </div>
+                        <button class="text-gray-400 hover:text-red-500" onclick="removePdf(${pdfFiles.length - 1})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    pdfList.appendChild(pdfItem);
+                }
+            };
+            input.click();
+        });
+
+        function removePdf(index) {
+            pdfFiles.splice(index, 1);
+            const pdfList = document.getElementById('pdfList');
+            pdfList.innerHTML = '';
+            
+            pdfFiles.forEach((file, i) => {
+                const pdfItem = document.createElement('div');
+                pdfItem.className = 'flex items-center justify-between bg-gray-50 p-2 rounded';
+                pdfItem.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                        <span class="text-sm">${file.name}</span>
+                    </div>
+                    <button class="text-gray-400 hover:text-red-500" onclick="removePdf(${i})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                pdfList.appendChild(pdfItem);
+            });
+        }
+
+        // Generar actividad con IA
+        document.getElementById('activityForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Recopilar datos del formulario
+            const formData = {
+                diagnosis: document.querySelector('textarea[placeholder*="Diagnóstico"]').value,
+                characteristics: document.querySelector('textarea[placeholder*="Características"]').value,
+                needs: document.querySelector('input[placeholder*="Necesidades"]').value,
+                area: document.getElementById('therapeuticArea').value,
+                duration: document.getElementById('durationSlider').value,
+                creativity: selectedCreativity,
+                strategies: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value),
+                customStrategies: document.querySelector('textarea[placeholder*="estrategias personalizadas"]').value,
+                context: document.querySelector('textarea[placeholder*="Contexto"]').value,
+                pdfs: pdfFiles.map(file => file.name)
+            };
+            
+            // Mostrar animación de carga
+            const generatedActivity = document.getElementById('generatedActivity');
+            generatedActivity.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12">
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mb-4"></div>
+                    <p class="text-gray-600">Analizando documentos y generando actividad...</p>
+                    <p class="text-sm text-gray-500 mt-2">La IA está creando una propuesta terapéutica personalizada</p>
+                </div>
+            `;
+            
+            // Simular llamada a API de IA (en producción sería una llamada real a tu backend)
+            setTimeout(() => {
+                const activity = generateActivityWithAI(formData);
+                displayGeneratedActivity(activity);
+            }, 3000);
+        });
+
+        // Simulación de IA generando actividad
+        function generateActivityWithAI(data) {
+            // En una implementación real, esto vendría de tu backend que llama a OpenAI, Claude, etc.
+            const areaNames = {
+                'lenguaje-adulto': 'Lenguaje Adulto',
+                'lenguaje-infantil': 'Lenguaje Infantil',
+                'habla-adulto': 'Habla Adulto',
+                'habla-infantil': 'Habla Infantil',
+                'deglucion-adulto': 'Deglución Adulto',
+                'deglucion-infantil': 'Deglución Infantil',
+                'motricidad-orofacial': 'Motricidad Orofacial',
+                'voz': 'Voz',
+                'fonoaudiologia-estetica': 'Fonoaudiología Estética',
+                'cognicion': 'Cognición',
+                'audiologia': 'Audiología'
+            };
+            
+            const strategies = [...data.strategies];
+            if (data.customStrategies) {
+                strategies.push(data.customStrategies);
+            }
+            
+            // Generar actividad basada en los datos
+            return {
+                title: `Aventura Terapéutica: ${data.needs.split(' ')[0] || 'Fonoaudiológica'}`,
+                area: areaNames[data.area] || data.area,
+                duration: data.duration,
+                objective: `Mejorar ${data.needs.toLowerCase()} a través de técnicas especializadas en ${areaNames[data.area]}`,
+                materials: generateMaterials(data.area, data.creativity),
+                procedure: generateProcedure(data),
+                adaptations: generateAdaptations(data),
+                strategies: strategies,
+                references: generateReferences(data.pdfs),
+                diagnosis: data.diagnosis,
+                context: data.context
+            };
+        }
+
+        function generateMaterials(area, creativity) {
+            const baseMaterials = {
+                'lenguaje-infantil': ['Tarjetas con imágenes', 'Libro de cuentos', 'Juego de mesa temático'],
+                'habla-infantil': ['Espejo pequeño', 'Tarjetas de fonemas', 'Juguetes sonoros'],
+                'voz': ['Botella con agua', 'Grabadora', 'Termómetro de humedad'],
+                'deglucion-infantil': ['Vasos de diferentes tamaños', 'Pajillas', 'Alimentos de texturas variadas'],
+                'motricidad-orofacial': ['Palitos de helado', 'Chicle terapéutico', 'Espejo de pared'],
+                'cognicion': ['Tarjetas de memoria', 'Reloj con temporizador', 'Tablero de categorías'],
+                'audiologia': ['Auriculares', 'Generador de tonos', 'Tarjetas con palabras']
+            };
+            
+            let materials = baseMaterials[area] || ['Material básico de fonoaudiología'];
+            
+            if (creativity === 'intermedio') {
+                materials.push('Tablet con apps especializadas');
+            } else if (creativity === 'avanzado') {
+                materials.push('Realidad virtual adaptada', 'Dispositivos de biofeedback');
+            }
+            
+            return materials;
+        }
+
+        function generateProcedure(data) {
+            const steps = [
+                {
+                    title: 'Preparación (3 min)',
+                    description: 'Establecer rapport y explicar la actividad de manera motivadora'
+                },
+                {
+                    title: 'Actividad principal (8 min)',
+                    description: `Desarrollar ejercicio específico para ${data.needs.toLowerCase()}`
+                },
+                {
+                    title: 'Reforzamiento (3 min)',
+                    description: 'Practicar en diferentes contextos y proporcionar retroalimentación'
+                },
+                {
+                    title: 'Cierre (1 min)',
+                    description: 'Resumir logros y asignar práctica para casa'
+                }
+            ];
+            
+            return steps;
+        }
+
+        function generateAdaptations(data) {
+            return [
+                {
+                    title: 'Para pacientes con menor atención',
+                    description: 'Dividir la actividad en segmentos más cortos con pausas activas'
+                },
+                {
+                    title: 'Para pacientes con limitaciones motoras',
+                    description: 'Adaptar materiales y usar tecnología de asistencia'
+                },
+                {
+                    title: 'Para pacientes con resistencia visual',
+                    description: 'Incorporar elementos táctiles y auditivos'
+                }
+            ];
+        }
+
+        function generateReferences(pdfs) {
+            const refs = [
+                {
+                    author: 'Smith et al. (2023)',
+                    title: 'Evidencia actual en intervenciones fonoaudiológicas',
+                    source: 'Journal of Speech Therapy'
+                }
+            ];
+            
+            if (pdfs.length > 0) {
+                refs.push({
+                    author: 'Material proporcionado',
+                    title: pdfs[0],
+                    source: 'Documento de referencia'
+                });
+            }
+            
+            return refs;
+        }
+
+        function displayGeneratedActivity(activity) {
+            const generatedActivity = document.getElementById('generatedActivity');
+            
+            generatedActivity.innerHTML = `
+                <!-- Encabezado -->
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-4 rounded-lg">
+                    <h3 class="text-2xl font-bold">${activity.title}</h3>
+                    <div class="flex items-center mt-2 text-indigo-100">
+                        <i class="fas fa-clock mr-1"></i>
+                        <span>${activity.duration} minutos</span>
+                        <i class="fas fa-stethoscope ml-4 mr-1"></i>
+                        <span>${activity.area}</span>
+                    </div>
+                </div>
+
+                <!-- Diagnóstico -->
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-file-medical text-indigo-600 mr-2"></i>Diagnóstico
+                    </h4>
+                    <p class="mt-1 text-gray-700">${activity.diagnosis || 'No especificado'}</p>
+                </div>
+
+                <!-- Objetivo -->
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-bullseye text-indigo-600 mr-2"></i>Objetivo Terapéutico
+                    </h4>
+                    <p class="mt-1 text-gray-700">${activity.objective}</p>
+                </div>
+
+                <!-- Materiales -->
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-tools text-indigo-600 mr-2"></i>Materiales Necesarios
+                    </h4>
+                    <ul class="mt-1 space-y-1 text-gray-700">
+                        ${activity.materials.map(material => `
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>${material}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <!-- Procedimiento -->
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-tasks text-indigo-600 mr-2"></i>Procedimiento
+                    </h4>
+                    <div class="mt-2 space-y-3">
+                        ${activity.procedure.map((step, index) => `
+                            <div class="flex">
+                                <div class="bg-indigo-100 text-indigo-800 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">${index + 1}</div>
+                                <div>
+                                    <p class="font-medium">${step.title}</p>
+                                    <p class="text-gray-600 text-sm">${step.description}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Adaptaciones -->
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-universal-access text-indigo-600 mr-2"></i>Adaptaciones
+                    </h4>
+                    <div class="mt-2 space-y-2">
+                        ${activity.adaptations.map(adaptation => `
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="font-medium text-blue-800">${adaptation.title}:</p>
+                                <p class="text-sm text-blue-700">${adaptation.description}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Estrategias de Apoyo -->
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-hands-helping text-indigo-600 mr-2"></i>Estrategias de Apoyo
+                    </h4>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                        ${activity.strategies.map(strategy => `
+                            <span class="bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full">${strategy}</span>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Referencias -->
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-book text-indigo-600 mr-2"></i>Referencias Científicas
+                    </h4>
+                    <ul class="mt-2 space-y-2 text-sm text-gray-700">
+                        ${activity.references.map(ref => `
+                            <li class="flex items-start">
+                                <i class="fas fa-quote-left text-indigo-400 mt-1 mr-2"></i>
+                                <div>
+                                    <p class="font-medium">${ref.author}:</p>
+                                    <p>"${ref.title}" - ${ref.source}</p>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <!-- Contexto -->
+                ${activity.context ? `
+                <div>
+                    <h4 class="font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-info-circle text-indigo-600 mr-2"></i>Contexto de Aplicación
+                    </h4>
+                    <p class="mt-1 text-gray-700">${activity.context}</p>
+                </div>
+                ` : ''}
+
+                <!-- Acciones -->
+                <div class="flex space-x-3 pt-4 border-t border-gray-200">
+                    <button class="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center">
+                        <i class="fas fa-save mr-2"></i>Guardar
+                    </button>
+                    <button class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center">
+                        <i class="fas fa-download mr-2"></i>Exportar PDF
+                    </button>
+                    <button class="flex-1 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition flex items-center justify-center">
+                        <i class="fas fa-share-alt mr-2"></i>Compartir
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
